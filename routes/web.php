@@ -17,10 +17,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/plm', [App\Http\Controllers\Plm\PlmController::class, 'index'])->name('plm.index');
-Route::post('/plm/store', [App\Http\Controllers\Plm\PlmController::class, 'store'])->name('plm.store');
 
 
+Route::group(['namespace' => 'Plm', 'prefix' => 'plm'], function () {
+    Route::get('/', 'IndexController')->name('plm.index');
+    Route::get('/create', 'CreateController')->name('plm.create');
+    Route::post('/', 'StoreController')->name('plm.store');
+    Route::get('/{plm}', 'ShowController')->name('plm.show');
+    Route::get('/edit/{plm}', 'EditController')->name('.plm.edit');
+    Route::patch('/{plm}', 'UpdateController')->name('plm.update');
+    Route::delete('/{plm}', 'DestroyController')->name('plm.delete');
+});
+
+
+
+Auth::routes();
